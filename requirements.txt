@@ -1,0 +1,7 @@
+faster-whisper>=1.1.0
+numpy>=1.26
+soundfile>=0.12
+# Optional preferred diarizer; install after preparing a local HF cache:
+# pyannote.audio>=3.3
+# Test dependency:
+# pytest>=8.0
