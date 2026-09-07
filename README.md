@@ -8,7 +8,7 @@ Production-oriented starter for converting local phone recordings into timestamp
 
 ## Prerequisites
 
-- Python 3.11+; `ffmpeg` on PATH (`sudo apt install ffmpeg` or `brew install ffmpeg`).
+- Python 3.11+ (Ubuntu 24.04’s system `python3` / 3.12 is fine); `ffmpeg` on PATH (`sudo apt install ffmpeg` or `brew install ffmpeg`).
 - Enough RAM/disk for your faster-whisper model. `small.en` is a practical start; `medium.en`/`large-v3` improve accuracy but require more resources.
 - Local Ollama at `http://127.0.0.1:11434` for summaries.
 
@@ -21,15 +21,18 @@ This project is meant to run in a Linux environment. On Windows, use **WSL2** wi
 
 ```bash
 sudo apt update
-sudo apt install -y ffmpeg python3.11 python3.11-venv git
+sudo apt install -y ffmpeg python3 python3-venv python3-pip git
+python3 --version   # Ubuntu 24.04 (Noble) ships 3.12; that satisfies >=3.11
 ```
+
+On older Ubuntu releases where you specifically need 3.11, install `python3.11` / `python3.11-venv` instead (or use the deadsnakes PPA). Do **not** use the `python3.11` package names on Noble — they are not in the default repos.
 
 3. Clone and install inside WSL (not under a Windows-only toolchain):
 
 ```bash
 git clone https://github.com/petersphil/meeting-notes.git
 cd meeting-notes
-python3.11 -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
 pip install -e ".[test]"
@@ -44,7 +47,7 @@ GPU acceleration in WSL is optional and depends on your NVIDIA/WSL CUDA setup; C
 ## Install and one-time model preparation
 
 ```bash
-python3.11 -m venv .venv
+python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -U pip
 pip install -e ".[test]"
