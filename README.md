@@ -12,6 +12,35 @@ Production-oriented starter for converting local phone recordings into timestamp
 - Enough RAM/disk for your faster-whisper model. `small.en` is a practical start; `medium.en`/`large-v3` improve accuracy but require more resources.
 - Local Ollama at `http://127.0.0.1:11434` for summaries.
 
+## Windows (WSL2)
+
+This project is meant to run in a Linux environment. On Windows, use **WSL2** with Ubuntu (or similar). Native PowerShell/CMD is not the supported path.
+
+1. Install WSL2 and Ubuntu from Microsoft’s docs, then open an Ubuntu terminal.
+2. Install system packages:
+
+```bash
+sudo apt update
+sudo apt install -y ffmpeg python3.11 python3.11-venv git
+```
+
+3. Clone and install inside WSL (not under a Windows-only toolchain):
+
+```bash
+git clone https://github.com/petersphil/meeting-notes.git
+cd meeting-notes
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+pip install -e ".[test]"
+```
+
+4. **Ollama:** install and run it in WSL, *or* on Windows. The CLI talks to `http://127.0.0.1:11434`, which usually reaches a Windows-hosted Ollama from WSL2. If summaries fail to connect, run `ollama serve` inside WSL and point config at that URL.
+5. **Audio files:** copy phone recordings into the Linux filesystem (for example `~/recordings/...`) before processing. Paths under `/mnt/c/...` work but are slower for long meetings.
+6. Continue with the one-time model download steps below, then `meeting-notes process ...` from the same WSL shell.
+
+GPU acceleration in WSL is optional and depends on your NVIDIA/WSL CUDA setup; CPU/`int8` works without it.
+
 ## Install and one-time model preparation
 
 ```bash
