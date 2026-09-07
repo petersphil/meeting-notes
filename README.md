@@ -110,3 +110,18 @@ Example faster-whisper cache warm-up while intentionally online (run once, then 
 ```bash
 MEETING_NOTES_ALLOW_MODEL_DOWNLOAD=1 python -c 'from faster_whisper import WhisperModel; WhisperModel("small.en", device="cpu", compute_type="int8")'
 ```
+
+## Browser recording and upload UI (Windows + WSL2)
+
+The optional local web UI lets you record from a Windows browser or upload an audio file while the existing pipeline runs in WSL. It does not upload audio or transcripts to the internet; the UI and API bind to `127.0.0.1` by default and summaries still use only loopback Ollama.
+
+Install the web extra inside the WSL virtual environment:
+
+```bash
+pip install -e ".[web]"
+meeting-notes serve --host 127.0.0.1 --port 8765
+```
+
+Leave that WSL terminal running, then open **http://127.0.0.1:8765** in Edge or Chrome on Windows. Allow microphone access when prompted; browser microphone permission is separate from WSL permissions. The page has Start/Stop recording and an audio-file dropzone, and polls the local job until the transcript, short/full summaries, action items, and annotated transcript are ready. Uploaded files and job artifacts are kept under `.meeting-notes/jobs/` in the WSL project directory; use `--jobs-dir` to choose another local directory.
+
+Chrome/Edge commonly record as WebM or OGG. The pipeline converts these formats with `ffmpeg`, so keep ffmpeg installed in WSL. If a browser-produced recording cannot be converted, manually convert it locally, for example `ffmpeg -i recording.webm recording.wav`, then upload the WAV. Three-hour meetings can take minutes to several hours; closing the server or its WSL process interrupts the in-memory job queue.

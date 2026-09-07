@@ -1,11 +1,11 @@
 """Local audio normalization through ffmpeg."""
 from pathlib import Path
 import shutil, subprocess
-SUPPORTED_SUFFIXES = {".wav", ".mp3", ".m4a"}
+SUPPORTED_SUFFIXES = {".wav", ".mp3", ".m4a", ".webm", ".ogg", ".opus", ".flac", ".aac"}
 def preprocess_audio(source: str | Path, work_dir: str | Path) -> Path:
     source = Path(source)
     if not source.is_file(): raise FileNotFoundError(source)
-    if source.suffix.lower() not in SUPPORTED_SUFFIXES: raise ValueError("Use wav, mp3, or m4a audio")
+    if source.suffix.lower() not in SUPPORTED_SUFFIXES: raise ValueError("Use wav, mp3, m4a, webm, ogg, opus, flac, or aac audio")
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg: raise RuntimeError("ffmpeg is required and must be on PATH")
     work = Path(work_dir); work.mkdir(parents=True, exist_ok=True)
