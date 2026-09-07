@@ -125,3 +125,7 @@ meeting-notes serve --host 127.0.0.1 --port 8765
 Leave that WSL terminal running, then open **http://127.0.0.1:8765** in Edge or Chrome on Windows. Allow microphone access when prompted; browser microphone permission is separate from WSL permissions. The page has Start/Stop recording and an audio-file dropzone, and polls the local job until the transcript, short/full summaries, action items, and annotated transcript are ready. Uploaded files and job artifacts are kept under `.meeting-notes/jobs/` in the WSL project directory; use `--jobs-dir` to choose another local directory.
 
 Chrome/Edge commonly record as WebM or OGG. The pipeline converts these formats with `ffmpeg`, so keep ffmpeg installed in WSL. If a browser-produced recording cannot be converted, manually convert it locally, for example `ffmpeg -i recording.webm recording.wav`, then upload the WAV. Three-hour meetings can take minutes to several hours; closing the server or its WSL process interrupts the in-memory job queue.
+
+## Browser speaker identity assignment
+
+After processing, the local UI shows an audio clip and transcript sample for each anonymous speaker. Listen and enter names, then save to rewrite the transcript and optionally regenerate local Ollama notes. Labels are per recording and are not reused across meetings; confirmed names are stored locally in `.meeting-notes/speaker-roster.json` as autocomplete suggestions.
